@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+    themes: sunset  --default, sunset --prefersdark;
+  };
+
+  @font-face {
+    font-family: Ubuntu;
+    src: url("/src/Font/Ubuntu.ttf") format(truetype);
+  }
+
+    @font-face {
+    font-family: Jersey;
+    src: url("/src/Font/Jersey.ttf") format(truetype);
+  }
