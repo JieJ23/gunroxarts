@@ -1,20 +1,16 @@
 import { teambattles } from "../Data/Outpost";
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-
-function sToA(string) {
-  const array = string.split(`,`);
-  return array;
-}
+import { getYTid } from "./Solo";
 
 export default function TeamBattles() {
   const [teamIndex, setTeamIndex] = useState(1); // current page
 
   const sortedByDateTeam = teambattles.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-  const ITEMS_PER_PAGE = 9;
+  const ITEMS_PER_PAGE = 12;
 
-  const TOTAL_Team_Page = Math.ceil(sortedByDateTeam.length / 9);
+  const TOTAL_Team_Page = Math.ceil(sortedByDateTeam.length / 12);
 
   const paginatedTeam = useMemo(() => {
     const start = (teamIndex - 1) * ITEMS_PER_PAGE;
@@ -23,65 +19,31 @@ export default function TeamBattles() {
   }, [sortedByDateTeam, teamIndex]);
 
   return (
-    <>
-      <div className="w-full max-w-350 mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
+    <div>
+      <div className="w-full max-w-400 mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-1">
           {paginatedTeam.map((obj, ind) => (
-            <div className="border border-black/60 rounded-sm p-1 relative">
-              <>
-                <div
-                  className="absolute w-full h-full top-0 right-0 -z-10 bg-center bg-cover"
-                  style={{ backgroundImage: `url(/Map/${obj.map}.webp)` }}
-                />
-                <div className="absolute w-full h-full top-0 right-0 -z-10 bg-black/75" />
-              </>
-              <div className="text-[11px] text-center">Game #{teambattles.length - ind}</div>
-              <div className="text-center my-2">
-                {ind <= 2 ? (
-                  <div>
-                    <div className="flex justify-evenly">
-                      {sToA(obj.p1).map((ite) => (
-                        <div>
-                          <img
-                            src={`http://www.gunrox.com/portrait/${ite}`}
-                            alt="Player"
-                            className="w-20 mx-auto drop-shadow-[0_0_15px_#ff0000]"
-                            draggable={false}
-                          />
-                          <div className="text-[15px] font-[Jersey] antialiased">{ite}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="my-auto text-[yellow] font-[Jersey] text-[20px]">VS</div>
-                    <div className="flex justify-evenly">
-                      {sToA(obj.p2).map((ite) => (
-                        <div>
-                          <img
-                            src={`http://www.gunrox.com/portrait/${ite}`}
-                            alt="Player"
-                            className="w-20 mx-auto drop-shadow-[0_0_15px_#0000ff]"
-                            draggable={false}
-                          />
-                          <div className="text-[15px] font-[Jersey] antialiased">{ite}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex justify-evenly text-[16px] text-white gap-2 font-[Jersey]">
-                    <div>{obj.p1}</div>
-                    <div className="text-[yellow]">VS</div>
-                    <div>{obj.p2}</div>
-                  </div>
-                )}
+            <div className="rounded-sm p-1 relative">
+              <div className="absolute w-full h-full top-0 right-0 -z-10 bg-center bg-cover" />
+              <img
+                src={`https://img.youtube.com/vi/${getYTid(obj.link)}/maxresdefault.jpg`}
+                alt="Gameplay Video"
+                className="aspect-video rounded border border-black/80"
+                loading="lazy"
+                draggable={false}
+              />
+              <div className="text-wrap text-center line-clamp-2 text-white text-[11px]">
+                <div>
+                  {`${obj.p1} vs ${obj.p2}`} @ {obj.map} {obj.time}
+                </div>
               </div>
-              <div className="flex gap-0.5 flex-wrap">
-                <div className="badge badge-xs badge-soft badge-success rounded-none">{obj.win}</div>
-                <div className="badge badge-xs badge-soft badge-accent rounded-none">{obj.map}</div>
-                <div className="badge badge-xs badge-soft badge-accent rounded-none">{obj.time}</div>
-                <Link to={obj.link} target="_blank" className="absolute right-1 bottom-1 hover:scale-110">
-                  <img src="/play.png" alt="Gameplay Video" className="size-4" />
-                </Link>
+              <Link className="flex gap-0.5 justify-center items-center  text-[11px]" to={obj.link} target="_blank">
+                <div className="text-orange-300">Gameplay Video</div>
+                <img src="play.png" alt="Video" className="size-3" />
+              </Link>
+              <div className="text-center flex justify-center gap-1 items-center text-white">
+                <img src="winner.png" alt="Winner" className="size-6" />
+                <div>{obj.win}</div>
               </div>
             </div>
           ))}
@@ -106,6 +68,6 @@ export default function TeamBattles() {
           Next
         </button>
       </div>
-    </>
+    </div>
   );
 }

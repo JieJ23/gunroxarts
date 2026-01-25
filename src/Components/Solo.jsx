@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 import BarGraph from "./BarGraph";
 
-function sToA(string) {
-  const array = string.split(`,`);
-  return array;
+export function getYTid(text) {
+  return text.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)[1];
 }
 
 export default function Solo() {
@@ -14,8 +13,8 @@ export default function Solo() {
   const sortedByDate = matches.sort((a, b) => new Date(b.time) - new Date(a.time));
 
   // Pagnition
-  const ITEMS_PER_PAGE = 16;
-  const TOTAL_Page = Math.ceil(sortedByDate.length / 16);
+  const ITEMS_PER_PAGE = 20;
+  const TOTAL_Page = Math.ceil(sortedByDate.length / 20);
 
   const paginatedData = useMemo(() => {
     const start = (pageIndex - 1) * ITEMS_PER_PAGE;
@@ -55,152 +54,111 @@ export default function Solo() {
   ).sort((a, b) => b[1] - a[1]);
 
   return (
-    <>
-      <div className="w-full max-w-350 mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 p-1">
-          {paginatedData.map((obj, ind) => (
-            <div className="border border-black/60 rounded-sm p-1 relative">
-              <div
-                className="absolute w-full h-full top-0 right-0 -z-10 bg-center bg-cover"
-                style={{ backgroundImage: `url(/Map/${obj.map}.webp)` }}
-              />
-              <div className="absolute w-full h-full top-0 right-0 -z-10 bg-black/75" />
-
-              <div className="text-[11px] text-center">Game #{matches.length - ind}</div>
-              <div className="text-center my-2">
-                {ind <= 3 ? (
-                  obj.p1.includes(",") ? (
-                    <div>
-                      <div className="flex justify-evenly">
-                        {sToA(obj.p1).map((ite) => (
-                          <div>
-                            <img
-                              src={`http://www.gunrox.com/portrait/${ite}`}
-                              alt="Player"
-                              className="w-20 mx-auto drop-shadow-[0_0_15px_#ff0000]"
-                              draggable={false}
-                            />
-                            <div className="text-[15px] font-[Jersey] antialiased">{ite}</div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="my-auto text-[yellow] font-[Jersey] text-[20px]">VS</div>
-                      <div className="flex justify-evenly">
-                        {sToA(obj.p2).map((ite) => (
-                          <div>
-                            <img
-                              src={`http://www.gunrox.com/portrait/${ite}`}
-                              alt="Player"
-                              className="w-20 mx-auto drop-shadow-[0_0_15px_#0000ff]"
-                              draggable={false}
-                            />
-                            <div className="text-[15px] font-[Jersey] antialiased">{ite}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex justify-between rounded">
-                      <div>
-                        <img
-                          src={`http://www.gunrox.com/portrait/${obj.p1}`}
-                          alt="Player"
-                          className="w-25 mx-auto drop-shadow-[0_0_15px_#ff0000]"
-                          draggable={false}
-                        />
-                        <div className="text-[15px] font-[Jersey] antialiased">{obj.p1}</div>
-                      </div>
-                      <div className="my-auto text-[yellow] font-[Jersey] text-[20px]">VS</div>
-                      <div>
-                        <img
-                          src={`http://www.gunrox.com/portrait/${obj.p2}`}
-                          alt="Player"
-                          className="w-25 mx-auto drop-shadow-[0_0_15px_#0000ff]"
-                          draggable={false}
-                        />
-                        <div className="text-[15px] font-[Jersey] antialiased">{obj.p2}</div>
-                      </div>
-                    </div>
-                  )
-                ) : (
-                  <div className="flex justify-evenly text-[16px] text-white gap-2 font-[Jersey]">
-                    <div>{obj.p1}</div>
-                    <div className="text-[yellow]">VS</div>
-                    <div>{obj.p2}</div>
-                  </div>
-                )}
+    <div className="w-full max-w-400 mx-auto">
+      {/* Graph & List */}
+      <div className="flex flex-col md:flex-row gap-1 my-4 text-[12px] p-1">
+        <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
+          <div className="bg-black/80 rounded p-2 relative">
+            <div className="py-1 text-center">Most Art Games Won 2026, Per Account.</div>
+            <img
+              src={`http://www.gunrox.com/portrait/${stats2026[0][0]}`}
+              alt="Player"
+              className="absolute bottom-0 right-1/2 translate-x-[50%] w-30 mx-auto drop-shadow-[0_0_12px_#ff0000]"
+              draggable={false}
+            />
+            {stats2026.slice(0, 5).map((arr, inde) => (
+              <div className="flex justify-between px-2">
+                <div>{arr[0]}</div>
+                <div>{arr[1]}</div>
               </div>
-              <div className="flex gap-0.5 flex-wrap">
-                <div className="badge badge-xs badge-soft badge-success rounded-none">{obj.win}</div>
-                <div className="badge badge-xs badge-soft badge-accent rounded-none">{obj.map}</div>
-                <div className="badge badge-xs badge-soft badge-accent rounded-none">{obj.time}</div>
-                <Link to={obj.link} target="_blank" className="absolute right-1 bottom-1 hover:scale-110">
-                  <img src="/play.png" alt="Gameplay Video" className="size-4" />
-                </Link>
+            ))}
+          </div>
+          <BarGraph data={stats2026} />
+        </div>
+        <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
+          <div className="bg-black/80 rounded p-2 relative">
+            <div className="py-1 text-center">Most Art Games Won, Per Account.</div>
+            <img
+              src={`http://www.gunrox.com/portrait/${higherStats[0][0]}`}
+              alt="Player"
+              className="absolute bottom-0 right-1/2 translate-x-[50%] w-30 mx-auto drop-shadow-[0_0_12px_#ff0000]"
+              draggable={false}
+            />
+            {higherStats.slice(0, 5).map((arr, inde) => (
+              <div className="flex justify-between px-2">
+                <div>{arr[0]}</div>
+                <div>{arr[1]}</div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <BarGraph data={higherStats} />
         </div>
-        <div className="flex justify-center gap-4 my-4 items-center font-[Ubuntu]">
-          <button
-            disabled={pageIndex === 1}
-            onClick={() => setPageIndex((prev) => prev - 1)}
-            className="min-w-15 bg-[white] text-black rounded cursor-pointer"
-          >
-            Prev
-          </button>
-          <div className="text-white">
-            {pageIndex}/{TOTAL_Page}
+        <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
+          <div className="bg-black/80 rounded p-2 relative">
+            <div className="py-1 text-center">Most Art Games Played, Per Account.</div>
+            <img
+              src={`http://www.gunrox.com/portrait/${appearStats[0][0]}`}
+              alt="Player"
+              className="absolute bottom-0 right-1/2 translate-x-[50%] w-30 mx-auto drop-shadow-[0_0_12px_#ff0000]"
+              draggable={false}
+            />
+            {appearStats.slice(0, 5).map((arr, inde) => (
+              <div className="flex justify-between px-2">
+                <div>{arr[0]}</div>
+                <div>{arr[1]}</div>
+              </div>
+            ))}
           </div>
-          <button
-            disabled={pageIndex * ITEMS_PER_PAGE >= sortedByDate.length}
-            onClick={() => setPageIndex((prev) => prev + 1)}
-            className="min-w-15 bg-[white] text-black rounded cursor-pointer"
-          >
-            Next
-          </button>
+          <BarGraph data={appearStats} />
         </div>
-        {/* Graph & List */}
-        <div className="flex flex-col md:flex-row gap-1 my-6 text-[12px] p-1">
-          <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
-            <div className="bg-black/80 rounded p-2">
-              <div className="py-1 text-center">Most Art Games Won 2026, Per Account.</div>
-              {stats2026.slice(0, 5).map((arr, inde) => (
-                <div className="flex justify-between px-2">
-                  <div>{arr[0]}</div>
-                  <div>{arr[1]}</div>
-                </div>
-              ))}
-            </div>
-            <BarGraph data={stats2026} />
-          </div>
-          <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
-            <div className="bg-black/80 rounded p-2">
-              <div className="py-1 text-center">Most Art Games Won, Per Account.</div>
-              {higherStats.slice(0, 5).map((arr, inde) => (
-                <div className="flex justify-between px-2">
-                  <div>{arr[0]}</div>
-                  <div>{arr[1]}</div>
-                </div>
-              ))}
-            </div>
-            <BarGraph data={higherStats} />
-          </div>
-          <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
-            <div className="bg-black/80 rounded p-2">
-              <div className="py-1 text-center">Most Art Games Played, Per Account.</div>
-              {appearStats.slice(0, 5).map((arr, inde) => (
-                <div className="flex justify-between px-2">
-                  <div>{arr[0]}</div>
-                  <div>{arr[1]}</div>
-                </div>
-              ))}
-            </div>
-            <BarGraph data={appearStats} />
-          </div>
-        </div>
-        {/* Graph & List */}
       </div>
-    </>
+      {/* Graph & List */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-1">
+        {paginatedData.map((obj, ind) => (
+          <div className="rounded-sm p-1 relative">
+            <div className="absolute w-full h-full top-0 right-0 -z-10 bg-center bg-cover" />
+            <img
+              src={`https://img.youtube.com/vi/${getYTid(obj.link)}/maxresdefault.jpg`}
+              alt="Gameplay Video"
+              className="aspect-video rounded border border-black/80"
+              loading="lazy"
+              draggable={false}
+            />
+            <div className="text-wrap text-center line-clamp-1 text-white text-[11px]">
+              <div>
+                {`${obj.p1} vs ${obj.p2}`} @ {obj.map} {obj.time}
+              </div>
+            </div>
+            <Link className="flex gap-0.5 justify-center items-center  text-[11px]" to={obj.link} target="_blank">
+              <div className="text-orange-300">Gameplay Video</div>
+              <img src="play.png" alt="Video" className="size-3" />
+            </Link>
+            <div className="text-center flex justify-center gap-1 items-center text-white">
+              <img src="winner.png" alt="Winner" className="size-6" />
+              <div>{obj.win}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-center gap-4 my-4 items-center font-[Ubuntu]">
+        <button
+          disabled={pageIndex === 1}
+          onClick={() => setPageIndex((prev) => prev - 1)}
+          className="min-w-15 bg-[white] text-black rounded cursor-pointer"
+        >
+          Prev
+        </button>
+        <div className="text-white">
+          {pageIndex}/{TOTAL_Page}
+        </div>
+        <button
+          disabled={pageIndex * ITEMS_PER_PAGE >= sortedByDate.length}
+          onClick={() => setPageIndex((prev) => prev + 1)}
+          className="min-w-15 bg-[white] text-black rounded cursor-pointer"
+        >
+          Next
+        </button>
+      </div>
+    </div>
   );
 }

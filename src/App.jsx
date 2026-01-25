@@ -13,7 +13,7 @@ export default function App() {
       <div className="divider divider-neutral font-[Jersey] text-[24px] text-white my-5">1v1 Battles</div>
       <Solo />
       {/* Team */}
-      <div className="divider divider-neutral font-[Jersey] text-[24px] text-white my-5">Team Battles</div>
+      <div className="divider divider-neutral font-[Jersey] text-[24px] text-white my-5 mt-10">Team Battles</div>
       <TeamBattles />
     </main>
   );
