@@ -1,5 +1,21 @@
 export const matches = [
   {
+    time: "1/26/2026",
+    map: "Lost",
+    p1: "Messmer",
+    p2: "Julia",
+    win: "Messmer",
+    link: "https://youtu.be/G1ylXp_2oCc?t=981",
+  },
+  {
+    time: "1/26/2026",
+    map: "Lost",
+    p1: "Messmer",
+    p2: "Julia",
+    win: "Messmer",
+    link: "https://www.youtube.com/watch?v=G1ylXp_2oCc",
+  },
+  {
     time: "1/1/2026",
     map: "Lost",
     p1: "-SwEeT-HeBrOn-",
