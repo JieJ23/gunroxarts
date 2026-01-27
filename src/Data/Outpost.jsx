@@ -11,7 +11,7 @@ export const teambattles = [
   {
     time: "1/16/2026",
     map: "Junk",
-    p1: "ONAM,LittleHair,keyt",
+    p1: "ONAM,Littlehair,keyt",
     p2: "SamBosa,Messmer,dollars",
     win: "SamBosa,Messmer,dollars",
     link: "https://www.youtube.com/watch?v=OEKl7o14EE0",
