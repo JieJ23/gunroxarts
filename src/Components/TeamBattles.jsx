@@ -8,9 +8,9 @@ export default function TeamBattles() {
 
   const sortedByDateTeam = teambattles.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-  const ITEMS_PER_PAGE = 12;
+  const ITEMS_PER_PAGE = 8;
 
-  const TOTAL_Team_Page = Math.ceil(sortedByDateTeam.length / 12);
+  const TOTAL_Team_Page = Math.ceil(sortedByDateTeam.length / 8);
 
   const paginatedTeam = useMemo(() => {
     const start = (teamIndex - 1) * ITEMS_PER_PAGE;
@@ -21,7 +21,7 @@ export default function TeamBattles() {
   return (
     <div>
       <div className="w-full max-w-400 mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 p-1">
           {paginatedTeam.map((obj, ind) => (
             <div className="rounded-sm p-1 relative">
               <div className="absolute w-full h-full top-0 right-0 -z-10 bg-center bg-cover" />

@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { matches } from "../Data/battles";
 
 export default function Stats() {
-  const allAvailablePlayers = [...new Set(matches.map((obj) => obj.p1 || obj.p2))].sort((a, b) =>
-    a.localeCompare(b, undefined, { sensitivity: "base" }),
-  );
+  const allAvailablePlayers = [...new Set(matches.flatMap((obj) => [obj.p1, obj.p2]))];
 
   const codex = [];
   for (let i = 0; i < allAvailablePlayers.length; i++) {
