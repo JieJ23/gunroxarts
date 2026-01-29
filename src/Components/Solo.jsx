@@ -59,7 +59,7 @@ export default function Solo() {
       <div className="flex flex-col md:flex-row gap-1 my-4 text-[12px] p-1">
         <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
           <div className="bg-black/80 rounded p-2 relative">
-            <div className="py-1 text-center">Most Art Games Won 2026, Per Account.</div>
+            <div className="py-1 text-center">Most 1x1 Art Games Won 2026 / Account.</div>
             <img
               src={`http://www.gunrox.com/portrait/${stats2026[0][0]}`}
               alt="Player"
@@ -77,7 +77,7 @@ export default function Solo() {
         </div>
         <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
           <div className="bg-black/80 rounded p-2 relative">
-            <div className="py-1 text-center">Most Art Games Won, Per Account.</div>
+            <div className="py-1 text-center">Most 1x1 Art Games Won / Account.</div>
             <img
               src={`http://www.gunrox.com/portrait/${higherStats[0][0]}`}
               alt="Player"
@@ -95,7 +95,7 @@ export default function Solo() {
         </div>
         <div className="flex flex-col sm:flex-row md:flex-col gap-1 w-full">
           <div className="bg-black/80 rounded p-2 relative">
-            <div className="py-1 text-center">Most Art Games Played, Per Account.</div>
+            <div className="py-1 text-center">Most 1x1 Art Games Played / Account.</div>
             <img
               src={`http://www.gunrox.com/portrait/${appearStats[0][0]}`}
               alt="Player"

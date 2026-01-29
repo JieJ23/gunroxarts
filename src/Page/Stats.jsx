@@ -1,17 +1,24 @@
 import Background from "../Components/Background";
 import { Link } from "react-router-dom";
+import { teambattles } from "../Data/Outpost";
 import { matches } from "../Data/battles";
 
-export default function Stats() {
-  const allAvailablePlayers = [...new Set(matches.flatMap((obj) => [obj.p1, obj.p2]))];
+const allTeamPlayer = [
+  ...new Set(
+    [...teambattles, ...matches].flatMap((obj) =>
+      obj.p1.split(",").length === 1 ? [obj.p1, obj.p2] : obj.p1.split(",") || obj.p2.split(","),
+    ),
+  ),
+].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 
+export default function Stats() {
   const codex = [];
-  for (let i = 0; i < allAvailablePlayers.length; i++) {
-    const playerArray = matches
-      .filter((obj) => obj.p1 === allAvailablePlayers[i] || obj.p2 === allAvailablePlayers[i])
+  for (let i = 0; i < allTeamPlayer.length; i++) {
+    const playerArray = [...teambattles, ...matches]
+      .filter((obj) => obj.p1.split(",").includes(allTeamPlayer[i]) || obj.p2.split(",").includes(allTeamPlayer[i]))
       .sort((a, b) => new Date(b.time) - new Date(a.time));
-    const gamesWon = playerArray.filter((obj) => obj.win === allAvailablePlayers[i]);
-    const gamesLost = playerArray.filter((obj) => obj.win !== allAvailablePlayers[i]);
+    const gamesWon = playerArray.filter((obj) => obj.win.split(",").includes(allTeamPlayer[i]));
+    const gamesLost = playerArray.filter((obj) => !obj.win.split(",").includes(allTeamPlayer[i]));
     const wonMaps = Object.entries(
       gamesWon.reduce((acc, ite) => {
         const mapPlayed = ite.map;
@@ -27,7 +34,7 @@ export default function Stats() {
       }, {}),
     );
     codex.push({
-      pn: allAvailablePlayers[i],
+      pn: allTeamPlayer[i],
       gamesArr: playerArray,
       winsArr: gamesWon,
       mapObject: wonMaps,
@@ -48,9 +55,6 @@ export default function Stats() {
         <Link to={`/Stats`}>
           <div className="p-2 border border-white/20 rounded text-white bg-black px-4">Stats</div>
         </Link>
-        <Link to={`/TeamStats`}>
-          <div className="p-2 border border-white/20 rounded text-white bg-black px-4">Team Stats</div>
-        </Link>
       </div>
       <div className="w-full max-w-300 mx-auto p-1">
         <div className="overflow-x-scroll my-4">
@@ -60,8 +64,8 @@ export default function Stats() {
               <tr className="font-[Ubuntu] text-[12px] text-white">
                 <th>Index</th>
                 <th>Acc</th>
-                <th className="w-75 min-w-60">Total Art Games</th>
-                <th>W/L</th>
+                <th className="w-80 min-w-60">Total Art Games</th>
+                <th className="min-w-40">W/L</th>
                 <th className="min-w-40">Map Won</th>
                 <th className="min-w-40">Map Lost</th>
               </tr>
@@ -86,7 +90,9 @@ export default function Stats() {
                               </div>
                             </div>
                           </div>
-                          <div className={`size-2 rounded-full ${obj2.win === obj.pn ? `bg-[#00ffaa]` : `bg-[red]`}`} />
+                          <div
+                            className={`size-2 rounded-full ${obj2.win.split(",").includes(obj.pn) ? `bg-[#00ffaa]` : `bg-[red]`}`}
+                          />
                         </div>
                       ))}
                     </div>

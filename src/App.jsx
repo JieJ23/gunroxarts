@@ -17,9 +17,6 @@ export default function App() {
         <Link to={`/Stats`}>
           <div className="p-2 border border-white/20 rounded text-white bg-black px-4">Stats</div>
         </Link>
-        <Link to={`/TeamStats`}>
-          <div className="p-2 border border-white/20 rounded text-white bg-black px-4">Team Stats</div>
-        </Link>
       </div>
       {/* Solo */}
       <div className="divider divider-neutral font-[Jersey] text-[24px] text-white my-5">1v1 Battles</div>
